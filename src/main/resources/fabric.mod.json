@@ -3,7 +3,7 @@
   "id": "forgottenworld",
   "version": "${version}",
   "name": "The Forgotten World",
-  "description": "0.1 — First Awakening. Ether ore, ether shards and the Void Staff. Lightweight: no custom rendering, no extra libraries.",
+  "description": "0.2.0 — Beyond the Veil. Ether ore, Void Staff, and a purple-black portal to the Forgotten dimension.",
   "authors": ["The Forgotten World Team"],
   "license": "MIT",
   "icon": "assets/forgottenworld/icon.png",

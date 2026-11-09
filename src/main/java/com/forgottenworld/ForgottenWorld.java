@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The Forgotten World — 0.1 "First Awakening".
- * Server-side logic only: no client entrypoint, no custom renderers, no extra libraries.
+ * The Forgotten World — 0.2.0 "Beyond the Veil".
+ * Adds a purple-black portal to the Forgotten dimension.
  */
 public class ForgottenWorld implements ModInitializer {
     public static final String MOD_ID = "forgottenworld";
@@ -25,6 +25,6 @@ public class ForgottenWorld implements ModInitializer {
         ModBlocks.register();
         ModItems.register();
         ModWorldGen.register();
-        LOGGER.info("The Forgotten World 0.1 — First Awakening loaded.");
+        LOGGER.info("The Forgotten World {} — Beyond the Veil loaded.", "0.2.0");
     }
 }
