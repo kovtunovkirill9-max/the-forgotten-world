@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": [
+    "III",
+    "I I",
+    "I I"
+  ],
+  "key": {
+    "I": "forgottenworld:umbral_ingot"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgottenworld:umbral_leggings"
+  }
+}

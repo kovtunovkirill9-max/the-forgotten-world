@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "forgottenworld:block/umbra_log_top",
+    "side": "forgottenworld:block/umbra_log"
+  }
+}

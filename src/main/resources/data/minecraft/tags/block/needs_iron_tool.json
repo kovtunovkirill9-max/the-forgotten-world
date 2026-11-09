@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "forgottenworld:ether_ore",
+    "forgottenworld:umbral_ore",
+    "forgottenworld:gloom_ore",
+    "forgottenworld:forgotten_frame"
+  ]
+}

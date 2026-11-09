@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "forgottenworld",
+  "version": "${version}",
+  "name": "The Forgotten World",
+  "description": "0.2.0 — Beyond the Veil. A purple-black portal to the Forgotten Dimension, unique resources, gear, creatures, and structures.",
+  "authors": ["The Forgotten World Team"],
+  "license": "MIT",
+  "icon": "assets/forgottenworld/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.forgottenworld.ForgottenWorld"],
+    "client": ["com.forgottenworld.client.ForgottenWorldClient"]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

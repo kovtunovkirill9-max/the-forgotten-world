@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SS",
+    "SS"
+  ],
+  "key": {
+    "S": "forgottenworld:umbral_shard"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgottenworld:umbral_ingot"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "structures": [
+    {
+      "structure": "forgottenworld:abandoned_tower",
+      "weight": 1
+    },
+    {
+      "structure": "forgottenworld:ancient_ruins",
+      "weight": 1
+    },
+    {
+      "structure": "forgottenworld:umbra_dungeon",
+      "weight": 1
+    },
+    {
+      "structure": "forgottenworld:ether_resource_site",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 9173521,
+    "spacing": 24,
+    "separation": 8
+  }
+}

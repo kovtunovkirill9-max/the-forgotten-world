@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "axis=x": { "model": "forgottenworld:block/forgotten_portal_ns" },
+    "axis=z": { "model": "forgottenworld:block/forgotten_portal_ew" }
+  }
+}

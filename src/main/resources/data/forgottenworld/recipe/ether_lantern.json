@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " I ",
+    "IEI",
+    " I "
+  ],
+  "key": {
+    "I": "minecraft:iron_nugget",
+    "E": "forgottenworld:ether_shard"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgottenworld:ether_lantern"
+  }
+}
