@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": "forgottenworld:ether_ore",
+  "result": { "id": "forgottenworld:ether_shard" },
+  "experience": 0.7,
+  "cookingtime": 200
+}

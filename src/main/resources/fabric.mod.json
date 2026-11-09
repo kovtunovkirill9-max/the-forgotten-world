@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "forgottenworld",
+  "version": "${version}",
+  "name": "The Forgotten World",
+  "description": "0.1 — First Awakening. Ether ore, ether shards and the Void Staff. Lightweight: no custom rendering, no extra libraries.",
+  "authors": ["The Forgotten World Team"],
+  "license": "MIT",
+  "icon": "assets/forgottenworld/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.forgottenworld.ForgottenWorld"]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
