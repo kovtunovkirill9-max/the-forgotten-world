@@ -1,6 +1,7 @@
 package com.forgottenworld;
 
 import com.forgottenworld.block.ModBlocks;
+import com.forgottenworld.dimension.ModDimensions;
 import com.forgottenworld.item.ModItems;
 import com.forgottenworld.worldgen.ModWorldGen;
 import net.fabricmc.api.ModInitializer;
@@ -25,6 +26,7 @@ public class ForgottenWorld implements ModInitializer {
         ModBlocks.register();
         ModItems.register();
         ModWorldGen.register();
+        ModDimensions.register();
         LOGGER.info("The Forgotten World {} — Beyond the Veil loaded.", "0.2.0");
     }
 }

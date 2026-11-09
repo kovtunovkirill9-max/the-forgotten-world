@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "forgottenworld:ether_shard",
+    "minecraft:flint_and_steel"
+  ],
+  "result": {
+    "count": 1,
+    "id": "forgottenworld:ether_igniter"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "S S",
+    " E ",
+    "S S"
+  ],
+  "key": {
+    "S": "minecraft:stone_bricks",
+    "E": "forgottenworld:ether_shard"
+  },
+  "result": {
+    "count": 4,
+    "id": "forgottenworld:forgotten_frame"
+  }
+}

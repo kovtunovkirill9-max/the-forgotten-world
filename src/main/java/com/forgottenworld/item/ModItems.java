@@ -23,6 +23,12 @@ public final class ModItems {
                     .durability(VoidStaffItem.DURABILITY)
                     .rarity(Rarity.RARE));
 
+    public static final Item ETHER_IGNITER = register("ether_igniter", EtherIgniterItem::new,
+            new Item.Properties()
+                    .stacksTo(1)
+                    .durability(64)
+                    .rarity(Rarity.UNCOMMON));
+
     private ModItems() {
     }
 
@@ -38,7 +44,12 @@ public final class ModItems {
                 .register(entries -> entries.accept(ETHER_SHARD));
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.NATURAL_BLOCKS)
                 .register(entries -> entries.accept(ModBlocks.ETHER_ORE));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.BUILDING_BLOCKS)
+                .register(entries -> entries.accept(ModBlocks.FORGOTTEN_FRAME));
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
-                .register(entries -> entries.accept(VOID_STAFF));
+                .register(entries -> {
+                    entries.accept(VOID_STAFF);
+                    entries.accept(ETHER_IGNITER);
+                });
     }
 }

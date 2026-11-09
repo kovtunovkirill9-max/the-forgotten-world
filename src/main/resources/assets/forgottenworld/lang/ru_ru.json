@@ -2,5 +2,8 @@
   "item.forgottenworld.ether_shard": "Эфирный осколок",
   "block.forgottenworld.ether_ore": "Эфирная руда",
   "item.forgottenworld.void_staff": "Посох Пустоты",
-  "message.forgottenworld.void_staff.blocked": "Там недостаточно места для рывка"
+  "block.forgottenworld.forgotten_frame": "Забытая рама",
+  "block.forgottenworld.forgotten_portal": "Забытый портал",
+  "item.forgottenworld.ether_igniter": "Эфирное огниво",
+  "message.forgottenworld.void_staff.blocked": "Недостаточно места для перемещения"
 }
