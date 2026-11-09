@@ -1,6 +1,7 @@
 package com.forgottenworld.block;
 
 import com.forgottenworld.dimension.ModDimensions;
+import com.forgottenworld.dimension.PortalLinkData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -69,9 +70,29 @@ public class ForgottenPortalBlock extends Block {
         }
 
         Direction.Axis axis = state.getValue(AXIS);
-        BlockPos linked = findOrCreateLinkedPortal(targetLevel, entity.blockPosition(), axis);
-        Vec3 dest = Vec3.atBottomCenterOf(linked);
+        ServerLevel overworld = serverLevel.getServer().getLevel(Level.OVERWORLD);
+        PortalLinkData linkData = overworld != null ? PortalLinkData.get(overworld) : null;
 
+        BlockPos linked;
+        if (linkData != null && entity.getUUID() != null) {
+            var remembered = linkData.recall(entity.getUUID(), current, pos);
+            if (remembered.isPresent() && targetLevel.getBlockState(remembered.get()).is(ModBlocks.FORGOTTEN_PORTAL)) {
+                linked = remembered.get();
+            } else if (remembered.isPresent() && !targetLevel.getBlockState(remembered.get()).is(ModBlocks.FORGOTTEN_PORTAL)) {
+                // Source/target portal mapping exists but portal was destroyed; recreate safely near remembered spot.
+                linked = createPortalNear(targetLevel, remembered.get(), axis);
+                linkData.remember(entity.getUUID(), current, pos, linked);
+            } else {
+                linked = findOrCreateLinkedPortal(targetLevel, entity.blockPosition(), axis);
+                linkData.remember(entity.getUUID(), current, pos, linked);
+                // Also remember reverse mapping for return after restart.
+                linkData.remember(entity.getUUID(), targetKey, linked, pos);
+            }
+        } else {
+            linked = findOrCreateLinkedPortal(targetLevel, entity.blockPosition(), axis);
+        }
+
+        Vec3 dest = Vec3.atBottomCenterOf(findStandNearPortal(targetLevel, linked));
         entity.setPortalCooldown();
         TeleportTransition transition = new TeleportTransition(
                 targetLevel, dest, Vec3.ZERO, entity.getYRot(), entity.getXRot(),
@@ -90,6 +111,21 @@ public class ForgottenPortalBlock extends Block {
         }
         BlockPos safe = findSafeBase(level, around);
         createPortal(level, safe, axis);
+        return safe.above();
+    }
+
+    private static BlockPos createPortalNear(ServerLevel level, BlockPos around, Direction.Axis axis) {
+        BlockPos safe = findSafeBase(level, around);
+        createPortal(level, safe, axis);
+        return safe.above();
+    }
+
+    private static BlockPos findStandNearPortal(ServerLevel level, BlockPos portalPos) {
+        if (level.getBlockState(portalPos).is(ModBlocks.FORGOTTEN_PORTAL)) {
+            return findPortalStand(level, portalPos);
+        }
+        if (canStand(level, portalPos)) return portalPos;
+        BlockPos safe = findSafeBase(level, portalPos);
         return safe.above();
     }
 

@@ -3,7 +3,7 @@
   "temperature": 0.5,
   "downfall": 0.0,
   "effects": {
-    "fog_color": 526360,
+    "fog_color": 328978,
     "water_color": 1056832,
     "water_fog_color": 1056832,
     "sky_color": 328976,
@@ -63,6 +63,12 @@
         "weight": 6,
         "minCount": 1,
         "maxCount": 1
+      },
+      {
+        "type": "forgottenworld:forgotten_lurker",
+        "weight": 25,
+        "minCount": 1,
+        "maxCount": 3
       }
     ],
     "underground_water_creature": [],

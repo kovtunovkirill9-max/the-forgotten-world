@@ -37,5 +37,6 @@
   "entity.forgottenworld.umbral_golem": "Теневой голем",
   "entity.forgottenworld.veil_watcher": "Страж Завесы",
   "message.forgottenworld.dimension_key.boss_nearby": "Страж Завесы уже рядом.",
-  "message.forgottenworld.dimension_key.summoned": "Страж Завесы выходит из теней."
+  "message.forgottenworld.dimension_key.summoned": "Страж Завесы выходит из теней.",
+  "entity.forgottenworld.veil_watcher.enraged": "Страж Завесы — Ярость"
 }

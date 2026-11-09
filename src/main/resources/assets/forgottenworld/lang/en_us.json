@@ -37,5 +37,6 @@
   "entity.forgottenworld.umbral_golem": "Umbral Golem",
   "entity.forgottenworld.veil_watcher": "Veil Watcher",
   "message.forgottenworld.dimension_key.boss_nearby": "A Veil Watcher is already nearby.",
-  "message.forgottenworld.dimension_key.summoned": "The Veil Watcher emerges from the shadows."
+  "message.forgottenworld.dimension_key.summoned": "The Veil Watcher emerges from the shadows.",
+  "entity.forgottenworld.veil_watcher.enraged": "Veil Watcher — Enraged"
 }

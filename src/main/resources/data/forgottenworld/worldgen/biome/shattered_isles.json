@@ -17,9 +17,9 @@
     },
     "particle": {
       "options": {
-        "type": "minecraft:portal"
+        "type": "minecraft:ash"
       },
-      "probability": 0.01
+      "probability": 0.02
     }
   },
   "spawners": {
@@ -63,6 +63,12 @@
         "weight": 6,
         "minCount": 1,
         "maxCount": 1
+      },
+      {
+        "type": "forgottenworld:shadow_wisp",
+        "weight": 40,
+        "minCount": 1,
+        "maxCount": 4
       }
     ],
     "underground_water_creature": [],
