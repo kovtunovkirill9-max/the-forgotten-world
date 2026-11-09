@@ -2,6 +2,7 @@ package com.forgottenworld;
 
 import com.forgottenworld.block.ModBlocks;
 import com.forgottenworld.dimension.ModDimensions;
+import com.forgottenworld.entity.ModEntities;
 import com.forgottenworld.item.ModItems;
 import com.forgottenworld.worldgen.ModWorldGen;
 import net.fabricmc.api.ModInitializer;
@@ -24,6 +25,7 @@ public class ForgottenWorld implements ModInitializer {
     @Override
     public void onInitialize() {
         ModBlocks.register();
+        ModEntities.register();
         ModItems.register();
         ModWorldGen.register();
         ModDimensions.register();

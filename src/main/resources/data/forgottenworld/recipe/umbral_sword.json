@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": [
+    " I ",
+    " I ",
+    " S "
+  ],
+  "key": {
+    "I": "forgottenworld:umbral_ingot",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgottenworld:umbral_sword"
+  }
+}

@@ -14,6 +14,7 @@ import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -23,10 +24,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.Optional;
+
 public class ForgottenPortalBlock extends Block {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     protected static final VoxelShape X_AXIS_AABB = Block.box(0.0, 0.0, 6.0, 16.0, 16.0, 10.0);
     protected static final VoxelShape Z_AXIS_AABB = Block.box(6.0, 0.0, 0.0, 10.0, 16.0, 16.0);
+    private static final int SEARCH_RADIUS = 128;
 
     public ForgottenPortalBlock(Properties properties) {
         super(properties);
@@ -64,52 +68,151 @@ public class ForgottenPortalBlock extends Block {
             return;
         }
 
-        BlockPos targetPos = findSafePos(targetLevel, entity.blockPosition());
-        Vec3 dest = Vec3.atBottomCenterOf(targetPos);
-        entity.setPortalCooldown();
+        Direction.Axis axis = state.getValue(AXIS);
+        BlockPos linked = findOrCreateLinkedPortal(targetLevel, entity.blockPosition(), axis);
+        Vec3 dest = Vec3.atBottomCenterOf(linked);
 
+        entity.setPortalCooldown();
         TeleportTransition transition = new TeleportTransition(
                 targetLevel, dest, Vec3.ZERO, entity.getYRot(), entity.getXRot(),
                 TeleportTransition.DO_NOTHING);
         Entity teleported = entity.teleport(transition);
         if (teleported != null) {
             teleported.setPortalCooldown();
-            targetLevel.playSound(null, targetPos, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 0.5F, 0.8F);
+            targetLevel.playSound(null, linked, SoundEvents.PORTAL_TRAVEL, SoundSource.BLOCKS, 0.5F, 0.8F);
         }
     }
 
-    private static BlockPos findSafePos(ServerLevel level, BlockPos around) {
+    private static BlockPos findOrCreateLinkedPortal(ServerLevel level, BlockPos around, Direction.Axis axis) {
+        Optional<BlockPos> existing = findNearbyPortal(level, around, SEARCH_RADIUS);
+        if (existing.isPresent()) {
+            return existing.get();
+        }
+        BlockPos safe = findSafeBase(level, around);
+        createPortal(level, safe, axis);
+        return safe.above();
+    }
+
+    private static Optional<BlockPos> findNearbyPortal(ServerLevel level, BlockPos around, int radius) {
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
         int minY = level.dimensionType().minY();
-        int maxY = minY + level.dimensionType().height();
-        int baseY = Math.max(minY + 1, Math.min(around.getY(), maxY - 3));
-        for (int dy = 0; dy < 32; dy++) {
-            for (int sign : new int[]{1, -1}) {
-                int y = baseY + dy * sign;
-                if (y <= minY || y >= maxY - 2) continue;
-                cursor.set(around.getX(), y, around.getZ());
-                if (canStand(level, cursor)) {
-                    ensurePlatform(level, cursor);
-                    return cursor.immutable();
+        int maxY = minY + level.dimensionType().height() - 1;
+        int y0 = Math.max(minY + 1, around.getY() - 16);
+        int y1 = Math.min(maxY - 2, around.getY() + 16);
+        int step = 2; // performance-friendly scan
+        for (int r = 0; r <= radius; r += step) {
+            for (int dx = -r; dx <= r; dx += Math.max(step, r == 0 ? 1 : r * 2)) {
+                for (int dz = -r; dz <= r; dz += step) {
+                    if (Math.abs(dx) != r && Math.abs(dz) != r && r != 0) continue;
+                    for (int y = y0; y <= y1; y += 2) {
+                        cursor.set(around.getX() + dx, y, around.getZ() + dz);
+                        if (level.getBlockState(cursor).is(ModBlocks.FORGOTTEN_PORTAL)) {
+                            return Optional.of(findPortalStand(level, cursor));
+                        }
+                    }
                 }
             }
         }
-        BlockPos fallback = new BlockPos(around.getX(), Math.max(baseY, 80), around.getZ());
-        ensurePlatform(level, fallback);
+        // fallback full-ish local scan
+        for (int dx = -32; dx <= 32; dx += 2) {
+            for (int dz = -32; dz <= 32; dz += 2) {
+                for (int y = y0; y <= y1; y++) {
+                    cursor.set(around.getX() + dx, y, around.getZ() + dz);
+                    if (level.getBlockState(cursor).is(ModBlocks.FORGOTTEN_PORTAL)) {
+                        return Optional.of(findPortalStand(level, cursor));
+                    }
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    private static BlockPos findPortalStand(ServerLevel level, BlockPos portalPos) {
+        BlockPos.MutableBlockPos m = portalPos.mutable();
+        while (level.getBlockState(m).is(ModBlocks.FORGOTTEN_PORTAL)) m.move(Direction.DOWN);
+        BlockPos base = m.immutable();
+        if (canStand(level, base.above())) return base.above();
+        for (Direction d : Direction.Plane.HORIZONTAL) {
+            BlockPos p = base.above().relative(d);
+            if (canStand(level, p) || level.getBlockState(p).getCollisionShape(level, p).isEmpty()) return p;
+        }
+        return base.above();
+    }
+
+    private static BlockPos findSafeBase(ServerLevel level, BlockPos around) {
+        int minY = level.dimensionType().minY() + 1;
+        int maxY = minY + level.dimensionType().height() - 5;
+        int baseY = Math.max(minY + 1, Math.min(around.getY(), maxY - 4));
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        for (int dy = 0; dy < 48; dy++) {
+            for (int sign : new int[]{1, -1}) {
+                int y = baseY + dy * sign;
+                if (y <= minY || y >= maxY) continue;
+                for (int dx = -4; dx <= 4; dx++) {
+                    for (int dz = -4; dz <= 4; dz++) {
+                        cursor.set(around.getX() + dx, y, around.getZ() + dz);
+                        if (isBuildableArea(level, cursor)) {
+                            return cursor.immutable();
+                        }
+                    }
+                }
+            }
+        }
+        BlockPos fallback = new BlockPos(around.getX(), Math.max(80, minY + 10), around.getZ());
+        clearArea(level, fallback);
         return fallback;
+    }
+
+    private static boolean isBuildableArea(ServerLevel level, BlockPos base) {
+        // Need space for 4 wide x 5 high frame footprint
+        for (int x = -1; x <= 2; x++) {
+            for (int y = 0; y <= 4; y++) {
+                BlockPos p = base.offset(x, y, 0);
+                BlockState s = level.getBlockState(p);
+                if (y == 0) {
+                    if (s.getCollisionShape(level, p).isEmpty() && !s.is(Blocks.BEDROCK)) continue; // will place frame below/ground ok
+                } else {
+                    if (!s.canBeReplaced()) return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static void clearArea(ServerLevel level, BlockPos base) {
+        for (int x = -1; x <= 2; x++) {
+            for (int y = 0; y <= 4; y++) {
+                BlockPos p = base.offset(x, y, 0);
+                if (y > 0) level.setBlock(p, Blocks.AIR.defaultBlockState(), 2);
+            }
+        }
+    }
+
+    private static void createPortal(ServerLevel level, BlockPos base, Direction.Axis axis) {
+        Direction right = axis == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
+        BlockState frame = ModBlocks.FORGOTTEN_FRAME.defaultBlockState();
+        BlockState portal = ModBlocks.FORGOTTEN_PORTAL.defaultBlockState().setValue(AXIS, axis);
+        // 4x5 frame (2x3 interior)
+        for (int x = -1; x <= 2; x++) {
+            for (int y = 0; y <= 4; y++) {
+                BlockPos p = base.relative(right, x).above(y);
+                boolean border = x == -1 || x == 2 || y == 0 || y == 4;
+                level.setBlock(p, border ? frame : portal, 2);
+            }
+        }
+        // ensure ground
+        for (int x = -1; x <= 2; x++) {
+            BlockPos below = base.relative(right, x).below();
+            if (level.getBlockState(below).isAir()) {
+                level.setBlock(below, frame, 2);
+            }
+        }
     }
 
     private static boolean canStand(ServerLevel level, BlockPos pos) {
         return level.getBlockState(pos).getCollisionShape(level, pos).isEmpty()
                 && level.getBlockState(pos.above()).getCollisionShape(level, pos.above()).isEmpty()
                 && !level.getBlockState(pos.below()).getCollisionShape(level, pos.below()).isEmpty();
-    }
-
-    private static void ensurePlatform(ServerLevel level, BlockPos feet) {
-        BlockPos below = feet.below();
-        if (level.getBlockState(below).isAir()) {
-            level.setBlock(below, ModBlocks.FORGOTTEN_FRAME.defaultBlockState(), Block.UPDATE_ALL);
-        }
     }
 
     @Override

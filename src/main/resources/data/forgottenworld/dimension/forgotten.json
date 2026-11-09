@@ -3,9 +3,46 @@
   "generator": {
     "type": "minecraft:noise",
     "biome_source": {
-      "type": "minecraft:fixed",
-      "biome": "minecraft:dark_forest"
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "forgottenworld:umbra_forest",
+          "parameters": {
+            "temperature": 0.0,
+            "humidity": 0.2,
+            "continentalness": 0.1,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "forgottenworld:gloom_valleys",
+          "parameters": {
+            "temperature": -0.2,
+            "humidity": -0.1,
+            "continentalness": -0.2,
+            "erosion": 0.2,
+            "weirdness": 0.1,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "forgottenworld:shattered_isles",
+          "parameters": {
+            "temperature": 0.2,
+            "humidity": -0.2,
+            "continentalness": 0.3,
+            "erosion": -0.2,
+            "weirdness": 0.4,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        }
+      ]
     },
-    "settings": "minecraft:floating_islands"
+    "settings": "minecraft:overworld"
   }
 }

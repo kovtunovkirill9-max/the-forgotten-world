@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " E ",
+    "EGE",
+    " E "
+  ],
+  "key": {
+    "E": "forgottenworld:ether_shard",
+    "G": "forgottenworld:gloom_crystal"
+  },
+  "result": {
+    "count": 1,
+    "id": "forgottenworld:dimension_key"
+  }
+}

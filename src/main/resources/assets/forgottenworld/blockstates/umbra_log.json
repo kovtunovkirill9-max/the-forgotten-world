@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "forgottenworld:block/umbra_log"
+    },
+    "axis=z": {
+      "model": "forgottenworld:block/umbra_log",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "forgottenworld:block/umbra_log",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

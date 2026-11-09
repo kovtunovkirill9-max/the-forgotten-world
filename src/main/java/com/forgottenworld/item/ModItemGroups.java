@@ -21,11 +21,40 @@ public final class ModItemGroups {
                         .title(Component.translatable("itemGroup.forgottenworld.forgotten_world"))
                         .icon(() -> new ItemStack(ModItems.ETHER_IGNITER))
                         .displayItems((context, entries) -> {
-                            entries.accept(ModBlocks.ETHER_ORE);
+                            // Portal & dimension
                             entries.accept(ModBlocks.FORGOTTEN_FRAME);
-                            entries.accept(ModItems.ETHER_SHARD);
                             entries.accept(ModItems.ETHER_IGNITER);
+                            entries.accept(ModItems.DIMENSION_KEY);
                             entries.accept(ModItems.VOID_STAFF);
+                            // Ores & resources
+                            entries.accept(ModBlocks.ETHER_ORE);
+                            entries.accept(ModBlocks.UMBRAL_ORE);
+                            entries.accept(ModBlocks.GLOOM_ORE);
+                            entries.accept(ModItems.ETHER_SHARD);
+                            entries.accept(ModItems.UMBRAL_SHARD);
+                            entries.accept(ModItems.GLOOM_CRYSTAL);
+                            entries.accept(ModItems.UMBRAL_INGOT);
+                            entries.accept(ModItems.SHADOW_DUST);
+                            // Weapons & tools
+                            entries.accept(ModItems.UMBRAL_SWORD);
+                            entries.accept(ModItems.UMBRAL_PICKAXE);
+                            entries.accept(ModItems.UMBRAL_AXE);
+                            entries.accept(ModItems.UMBRAL_SHOVEL);
+                            entries.accept(ModItems.UMBRAL_HOE);
+                            // Armor
+                            entries.accept(ModItems.UMBRAL_HELMET);
+                            entries.accept(ModItems.UMBRAL_CHESTPLATE);
+                            entries.accept(ModItems.UMBRAL_LEGGINGS);
+                            entries.accept(ModItems.UMBRAL_BOOTS);
+                            // Dimension blocks & decor
+                            entries.accept(ModBlocks.FORGOTTEN_STONE);
+                            entries.accept(ModBlocks.FORGOTTEN_STONE_BRICKS);
+                            entries.accept(ModBlocks.GLOOM_DIRT);
+                            entries.accept(ModBlocks.UMBRA_LOG);
+                            entries.accept(ModBlocks.UMBRA_PLANKS);
+                            entries.accept(ModBlocks.UMBRA_LEAVES);
+                            entries.accept(ModBlocks.GLOW_MOSS);
+                            entries.accept(ModBlocks.ETHER_LANTERN);
                         })
                         .build());
     }

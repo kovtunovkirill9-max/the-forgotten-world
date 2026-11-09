@@ -1,4 +1,12 @@
 {
   "replace": false,
-  "values": ["forgottenworld:ether_ore", "forgottenworld:forgotten_frame"]
+  "values": [
+    "forgottenworld:ether_ore",
+    "forgottenworld:umbral_ore",
+    "forgottenworld:gloom_ore",
+    "forgottenworld:forgotten_frame",
+    "forgottenworld:forgotten_stone",
+    "forgottenworld:forgotten_stone_bricks",
+    "forgottenworld:ether_lantern"
+  ]
 }

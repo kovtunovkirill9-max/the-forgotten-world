@@ -28,11 +28,10 @@ jobs:
       - name: Build mod
         run: gradle build --no-daemon
 
-      - name: Upload mod JAR
+      - name: Upload mod JAR and sources
         uses: actions/upload-artifact@v4
         with:
-          name: the-forgotten-world-1.21.11
+          name: the-forgotten-world-1.21.11-fabric
           path: |
             build/libs/the-forgotten-world-*.jar
-            !build/libs/*-sources.jar
           if-no-files-found: error
