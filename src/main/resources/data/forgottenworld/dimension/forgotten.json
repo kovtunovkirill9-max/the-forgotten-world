@@ -3,9 +3,9 @@
   "generator": {
     "type": "minecraft:noise",
     "biome_source": {
-      "type": "minecraft:multi_noise",
-      "preset": "minecraft:overworld"
+      "type": "minecraft:fixed",
+      "biome": "minecraft:dark_forest"
     },
-    "settings": "minecraft:overworld"
+    "settings": "minecraft:floating_islands"
   }
 }

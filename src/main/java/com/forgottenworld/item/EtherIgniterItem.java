@@ -30,13 +30,26 @@ public class EtherIgniterItem extends Item {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
+
+        // Try both sides of the clicked frame face so activation works from different sides.
         BlockPos inside = pos.relative(context.getClickedFace());
+        BlockPos opposite = pos.relative(context.getClickedFace().getOpposite());
         Optional<PortalFrame> frame = PortalFrame.find(level, inside);
+        if (frame.isEmpty()) {
+            frame = PortalFrame.find(level, opposite);
+        }
+        if (frame.isEmpty()) {
+            // Fallback: try vertical neighbors (useful when clicking top/bottom frame blocks).
+            frame = PortalFrame.find(level, pos.above());
+            if (frame.isEmpty()) frame = PortalFrame.find(level, pos.below());
+        }
         if (frame.isEmpty()) {
             return InteractionResult.FAIL;
         }
+
         frame.get().placePortalBlocks(level);
-        level.playSound(null, inside, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
+        BlockPos soundPos = frame.get().bottomLeft;
+        level.playSound(null, soundPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
         if (context.getPlayer() != null) {
             context.getItemInHand().hurtAndBreak(1, context.getPlayer(),
                     context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND
@@ -55,20 +68,40 @@ public class EtherIgniterItem extends Item {
             return Optional.empty();
         }
 
+        private static final int MAX_FRAME = 21;
+        private static final int MAX_SCAN = MAX_FRAME + 1;
+
         static Optional<PortalFrame> findAxis(Level level, BlockPos start, Direction.Axis axis) {
             Direction right = axis == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
+            Direction leftDir = right.getOpposite();
+
             BlockPos left = start;
-            while (isEmpty(level, left.relative(right.getOpposite()))) left = left.relative(right.getOpposite());
+            for (int i = 0; i < MAX_SCAN && isEmpty(level, left.relative(leftDir)); i++) {
+                left = left.relative(leftDir);
+            }
             BlockPos bottom = left;
-            while (isEmpty(level, bottom.below())) bottom = bottom.below();
+            for (int i = 0; i < MAX_SCAN && isEmpty(level, bottom.below()); i++) {
+                bottom = bottom.below();
+            }
+
             int width = 0;
             BlockPos cursor = bottom;
-            while (isEmpty(level, cursor)) { width++; cursor = cursor.relative(right); if (width > 21) return Optional.empty(); }
+            while (width <= MAX_FRAME && isEmpty(level, cursor)) {
+                width++;
+                cursor = cursor.relative(right);
+            }
             int height = 0;
             cursor = bottom;
-            while (isEmpty(level, cursor)) { height++; cursor = cursor.above(); if (height > 21) return Optional.empty(); }
-            if (width < 2 || height < 3) return Optional.empty();
-            if (!isValid(level, bottom, width, height, right)) return Optional.empty();
+            while (height <= MAX_FRAME && isEmpty(level, cursor)) {
+                height++;
+                cursor = cursor.above();
+            }
+            if (width < 2 || width > MAX_FRAME || height < 3 || height > MAX_FRAME) {
+                return Optional.empty();
+            }
+            if (!isValid(level, bottom, width, height, right)) {
+                return Optional.empty();
+            }
             return Optional.of(new PortalFrame(bottom, width, height, axis));
         }
 

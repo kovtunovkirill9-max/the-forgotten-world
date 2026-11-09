@@ -5,6 +5,7 @@
   "block.forgottenworld.forgotten_frame": "Forgotten Frame",
   "block.forgottenworld.forgotten_portal": "Forgotten Portal",
   "item.forgottenworld.ether_igniter": "Ether Igniter",
+  "itemGroup.forgottenworld.forgotten_world": "Forgotten World",
   "message.forgottenworld.void_staff.blocked": "Not enough space to blink there",
   "message.forgottenworld.portal.blocked": "The portal could not find a safe place in the Forgotten dimension"
 }

@@ -5,5 +5,6 @@
   "block.forgottenworld.forgotten_frame": "Забытая рама",
   "block.forgottenworld.forgotten_portal": "Забытый портал",
   "item.forgottenworld.ether_igniter": "Эфирное огниво",
+  "itemGroup.forgottenworld.forgotten_world": "Забытый мир",
   "message.forgottenworld.void_staff.blocked": "Недостаточно места для перемещения"
 }
